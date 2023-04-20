@@ -1,7 +1,7 @@
 from login import Login
-from cart import Cart
-from user import User
-from inventory import Inventory
+#from cart import Cart
+#from user import User
+#1from inventory import Inventory
 
 import mysql.connector
 import sys

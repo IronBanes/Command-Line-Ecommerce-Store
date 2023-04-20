@@ -15,13 +15,26 @@ class Login:
     def setpassword(self, password):
         self.password = password
     
+    def setemail(self, email):
+        self.email = ""
+        
+    def setfirstname(self, firstname):
+        self.firstname = ""
+        
+    def setlastname(self, lastname): 
+        self.lastname = ""
+    
+
+
+
+
     def loginaccount(self):
         try:
             connection = mysql.connector.connect(
                 host="localhost",
-            user="root",
-            password="",
-            database="methods"
+                user="root",
+                password="password",
+                database="projectschema"
             )
 
         except:
@@ -30,7 +43,14 @@ class Login:
             ## exits the program if unsuccessful
             sys.exit()
         cursor = connection.cursor()
+
+        cursor.execute("SELECT username FROM users")
         
+        result = cursor.fetchall()
+        
+        print("Enter result set: ", result, sep="\n", end="\n\n\n")
+
+
         print(self.username,self.password)
 
 
