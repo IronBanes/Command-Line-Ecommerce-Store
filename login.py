@@ -25,23 +25,8 @@ class Login:
         self.lastname = ""
     
 
-
-
-
     def loginaccount(self):
-        try:
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="password",
-                database="projectschema"
-            )
-
-        except:
-            print("Failed connection. Database is not open.")
-
-            ## exits the program if unsuccessful
-            sys.exit()
+        
         cursor = connection.cursor()
 
         cursor.execute("SELECT username FROM users")
