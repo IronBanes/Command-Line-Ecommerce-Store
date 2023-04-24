@@ -9,17 +9,22 @@ import os
 
 user = User()
 
-
+def manageaccount():
+    while (1):
+        os.system("cls")
+        print("0. Back to Main Menu")
+        print("1. ")
+        print("2. Cart")
+        print("3. Manage Account")
+        manageacc = input("Select Menu Option: ")
 
 def store():
-    
-    mainstoreloop = 1
-    while(mainstoreloop != 0):
+    while(1):
         os.system("cls")
         print("0. Exit")
         print("1. Store")
         print("2. Cart")
-        print("3. Log Off")
+        print("3. Manage Account")
         mainstoreloop = input("Select Menu Option: ")
     
         if(mainstoreloop == "0"):
@@ -29,7 +34,7 @@ def store():
         elif(mainstoreloop == "2"):
             print("Cart")
         elif(mainstoreloop == "3"):
-            main()
+            manageaccount()
 
 def main():
     while(1):

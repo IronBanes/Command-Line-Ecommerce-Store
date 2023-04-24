@@ -1,6 +1,9 @@
 import mysql.connector
 import sys
+
+
 class User:
+
     def __init__(self):
         self.username = ""
         self.password = ""
@@ -23,7 +26,6 @@ class User:
         
     def setlastname(self, lastname): 
         self.lastname = ""
-    
 
     def loginaccount(self):
         if(self.username == "IronBanes"):
@@ -34,6 +36,4 @@ class User:
         else:
             return False
 
-    
-
-
+    def
