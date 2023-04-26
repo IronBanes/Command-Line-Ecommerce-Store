@@ -1,6 +1,6 @@
 import mysql.connector
 import sys
-class inventory:
+class cart:
     def _init_ (self):
         self.itemID = ""
         self.shippingAddress = ""
