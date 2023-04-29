@@ -11,7 +11,7 @@ user = User()
 
 def manageaccount():
     while (1):
-        os.system("cls")
+        #os.system("cls")
         print("0. Back to Main Menu")
         print("1. ")
         print("2. Cart")
@@ -20,7 +20,7 @@ def manageaccount():
 
 def store():
     while(1):
-        os.system("cls")
+        #os.system("cls")
         print("0. Exit")
         print("1. Store")
         print("2. Cart")
@@ -38,7 +38,7 @@ def store():
 
 def main():
     while(1):
-        os.system("cls")
+        #os.system("cls")
         print("0. Exit")
         print("1. Login")
 
