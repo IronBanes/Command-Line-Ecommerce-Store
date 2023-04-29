@@ -1,17 +1,16 @@
 import mysql.connector
 import sys
-import os
-Game1 = "Halo 2"
-Game2 = "Titanfall 2"
-Game3 = "Super Mario Galaxy"
-Game4 = "Call of Duty 4"
-Game5 = "Need For Speed Hot Pursuit Remasterd"
-Game6 = "Super Smash Bros Ulitmate"
-Game7 = "Driver San Francisco"
-Game8 = "Legend of Zelda: Breath of the Wild"
-Game9 = "Sonic Frontiers"
-    
+import os    
 class Inventory:
+    Game1 = "Halo 2"
+    Game2 = "Titanfall 2"
+    Game3 = "Super Mario Galaxy"
+    Game4 = "Call of Duty 4"
+    Game5 = "Need For Speed Hot Pursuit Remasterd"
+    Game6 = "Super Smash Bros Ulitmate"
+    Game7 = "Driver San Francisco"
+    Game8 = "Legend of Zelda: Breath of the Wild"
+    Game9 = "Sonic Frontiers"
 
     connection = mysql.connector.connect(
         host= "localhost",
