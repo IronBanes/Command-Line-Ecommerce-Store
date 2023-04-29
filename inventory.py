@@ -2,7 +2,7 @@ import mysql.connector
 import sys
 import os
 
-class Store:
+class Inventory:
     Game1 = "Halo 2"
     Game2 = "Titanfall 2"
     Game3 = "Super Mario Galaxy"
