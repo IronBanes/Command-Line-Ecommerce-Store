@@ -35,18 +35,26 @@ class Inventory:
     
     
     def get_title(self, itemID):
-        sql = "SELECT FROM title FROM inventory WHERE itemID = %s"
+        sql = "SELECT title FROM inventory WHERE itemID = %s"
         value = (itemID,)
         self.cursor.execute(sql, value)
-        title = self.cur.fetchone()[0]
+        title = self.cursor.fetchone()[0]
         return title
     
     def get_stock(self, itemID):
         sql = "SELECT stock FROM inventory WHERE itemID = %s"
         value = (itemID,)
         self.cursor.execute(sql, value)
-        stock = self.cur.fetchone()[0]
+        stock = self.cursor.fetchone()[0]
         return stock
+
+
+
+
+
+
+
+
     
 
 
