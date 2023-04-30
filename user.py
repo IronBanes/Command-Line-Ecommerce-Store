@@ -22,42 +22,58 @@ class User:
         self.state = ""
         self.zipcode = ""
 
+    def getuserid(self):
+        return self.userid
+    
+#region username
     def setusername(self, username):
         self.username = username
     
     def getusername(self):
         return self.username 
+#endregion
 
+#region password
     def setpassword(self, password):
         self.password = password
     
     def getpassword(self):
         return self.password 
-    
+#endregion
+
+#region email
     def setemail(self, email):
         self.email = email
 
     def getemail(self):
         return self.email 
+#endregion
 
+#region firstname
     def setfirstname(self, firstname):
         self.firstname = firstname
         
     def getfirstname(self):
         return self.firstname 
-        
+#endregion   
+
+#region lastname
     def setlastname(self, lastname): 
         self.lastname = lastname
       
     def getlastname(self): 
         return self.lastname 
-     
+#endregion
+
+#region payment
     def getcard(self):
         return self.card
     
     def getcvv(self):
         return self.cvv
+#endregion
 
+#region shippinginfo
     def getaddress(self):
         return self.address
 
@@ -69,7 +85,9 @@ class User:
 
     def getzipcode(self):
         return self.zipcode
+#endregion
 
+#region login/create
     def loginaccount(self):
         try:
             connection = mysql.connector.connect(
@@ -78,26 +96,26 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
-        
-        print()
 
         cursor = connection.cursor()
 
-        cursor.execute("SELECT UserIds, username, password FROM users")
+        cursor.execute("SELECT UserIds, firstname, lastname, username, password, email FROM users")
 
         result = cursor.fetchall()
 
         for x in result:
-            print("Entire Row:",x,"\n")
-            if (x[1] == self.username and x[2] == self.password):
+            if (x[3] == self.username and x[4] == self.password):
                 self.userid = x[0]
+                self.firstname = x[1]
+                self.lastname = x[2]
+                self.username = x[3]
+                self.password = x[4]
+                self.email = x[5]
+
                 return True
             else:
                 return False
@@ -112,15 +130,11 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
         cursor = connection.cursor()
 
         cursor.execute("SELECT UserIds, username FROM users")
@@ -132,25 +146,24 @@ class User:
             numofusers += 1
             if (x[1] == self.username):
                 return False
-        print(numofusers)
+        
 
 
         query = "INSERT INTO users (UserIDs, firstname, lastname, username, password, email) VALUES(%s, %s, %s, %s, %s, %s)"
-        data = (numofusers, self.firstname, self.lastname, self.username, self.password, self.email)
+        data = (numofusers + 1, self.firstname, self.lastname, self.username, self.password, self.email)
         self.userid = numofusers
         
         try:
             cursor.execute(query, data)
             connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            print()
         
         except Error as error:
             print(error)
         finally:
             cursor.close()
             connection.close()
-       
+#endregion
+
     def setshippinginfo(self, address, city, state, zipcode):
         try:
             connection = mysql.connector.connect(
@@ -159,15 +172,11 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
         cursor = connection.cursor()
 
         cursor.execute("SELECT ShippingIDS, UserIDs FROM shipping")
@@ -187,7 +196,7 @@ class User:
             data = ( address, city, state, zipcode, self.userid,)
         else:
             query =  "INSERT INTO shipping (ShippingIDs, UserIDs, address, city, state, zipcode) VALUES(%s, %s, %s, %s, %s)"
-            data = (numofshipids, self.userid, address, city, state, zipcode)
+            data = (numofshipids + 1, self.userid, address, city, state, zipcode)
 
         try:
             cursor.execute(query, data)
@@ -208,15 +217,11 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
         cursor = connection.cursor()
 
         cursor.execute("SELECT paymentID, UserIDs FROM payment")
@@ -238,7 +243,7 @@ class User:
             data = (card, cvv, self.userid)
         else:
             query =  "INSERT INTO payment (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
-            data = (numofpayment, self.userid, card, cvv)
+            data = (numofpayment + 1, self.userid, card, cvv)
 
         try:
             cursor.execute(query, data)
@@ -258,15 +263,11 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
         cursor = connection.cursor()
 
         cursor.execute("SELECT paymentID, UserIDs, card, cvv FROM payment")
@@ -291,15 +292,11 @@ class User:
                 password="password",
                 database="projectschema"
             )
-
-            
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
         cursor = connection.cursor()
 
         cursor.execute("SELECT ShippingIDS, UserIDs, address, city, state, zipcode FROM shipping")
@@ -354,13 +351,11 @@ class User:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
-        
-        
+    
         cursor = connection.cursor()
 
-        
-        query ="UPDATE users SET  firstname=%s, lastname=%s, username=%s, password=%s, email=%s WHERE UserIDs = %s)" 
-        data =(self.firstname,self.lastname,self.username,self.password,self.email, self.userid)
+        query ="UPDATE users SET firstname=%s, lastname=%s, username=%s, password=%s, email=%s WHERE UserIDs=%s" 
+        data = (self.firstname, self.lastname, self.username, self.password, self.email, self.userid)
 
         try:
             cursor.execute(query, data)

@@ -8,7 +8,7 @@ class Cart:
         self.userid = 0
         self.quantity = 0
         self.total = 0 
-        self.cartids = []
+        self.lists = []
 
     def setuserid(self, userid):
         self.userid = userid
@@ -21,15 +21,10 @@ class Cart:
                 password="password",
                 database="projectschema"
             )
-
-            print("Successful connection.")
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
-        
-        print()
 
         cursor = connection.cursor()
 
@@ -58,17 +53,12 @@ class Cart:
 
         try:
             cursor.execute(query, data)
-            connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            print()
-        
+            connection.commit()        
         except Error as error:
             print(error)
         finally:
             cursor.close()
             connection.close()
-
-
 
     def removeitem(self, pos):
         try:
@@ -78,23 +68,35 @@ class Cart:
                 password="password",
                 database="projectschema"
             )
-
-            print("Successful connection.")
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
-
         cursor = connection.cursor()
 
-        try:
-            cursor.execute("DELETE FROM cart WHERE cartID=%s",pos)
+        query = "SELECT cartID, UserIDs, itemIDs, quantity, value FROM cart WHERE UserIDs = %s"
+        data = (self.userid,)
+        cursor.execute(query, data)
+
+        cartresults = cursor.fetchall()   
+ 
+        cartlist = []
+        for x in cartresults:
+            cartid = x[0]
+            cartlist.append(x[0])
+
+
+        query = "DELETE FROM cart WHERE cartID = %s"
+        data = (cartlist[int(pos)],)
+
+        cursor.execute(query,data)
             ## commits to database
             ## **needed** for changes to be made to a table
-            connection.commit()
+        connection.commit()
+        try:
+            
+
             cursor.close()
             connection.close()
             return True
@@ -103,7 +105,7 @@ class Cart:
             connection.close()
             return False
 
-    def display(self, userID):
+    def display(self):
         try:
             connection = mysql.connector.connect(
                 host="localhost",
@@ -111,8 +113,6 @@ class Cart:
                 password="password",
                 database="projectschema"
             )
-
-            print("Successful connection.")
         except:
             print("Failed connection.")
 
@@ -121,20 +121,27 @@ class Cart:
         print()
 
         cursor = connection.cursor()
-        
-        cursor.execute("SELECT cartID, UserIDs, itemIDs, quantity, value from cart WHERE UserIDs=%s",userID)
+        query = "SELECT cartID, UserIDs, itemIDs, quantity, value FROM cart WHERE UserIDs = %s"
+        data = (self.userid,)
+        cursor.execute(query, data)
 
         cartresults = cursor.fetchall()   
 
         row = 0 
+        cartlist = []
         for x in cartresults:
-            self.cartids += x[1]
-            cursor.execute("SELECT title from inventory WHERE ItemID=%s",x[2])
+            cartid = x[0]
+            cartlist.append(x[0])
+            query = "SELECT title from inventory WHERE ItemID = %s"
+            data = (x[2],)
+            cursor.execute(query,data)
 
             inventoryresults = cursor.fetchall()
-
-            print(row + ". " + x[3]+"x"+ inventoryresults +"$"+x[4] )
-        
+            for y in inventoryresults:
+                inv = y[0]
+            print(row , ". " , x[3],"x", inv ,"$",x[4] )
+            row += 1
+        self.lists = cartlist
         cursor.close()
         connection.close()
 
@@ -146,25 +153,19 @@ class Cart:
                 password="password",
                 database="projectschema"
             )
-
-            print("Successful connection.")
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
-
         cursor = connection.cursor()
         
         totalprice = 0
-        for x in self.cartids:
-            cursor.execute("SELECT price from cart WHERE cartID=%s",x)
+        for x in self.lists:
+            cursor.execute("SELECT value FROM cart WHERE cartID=%s",(x,))
             
             results = cursor.fetchall()
-            
-            totalprice += results
+            totalprice += results[0][0]
         
         cursor.close()
         connection.close()
@@ -179,24 +180,31 @@ class Cart:
                 password="password",
                 database="projectschema"
             )
-
-            print("Successful connection.")
-
         except:
             print("Failed connection.")
 
             ## exits the program if unsuccessful
         
-        print()
-
         cursor = connection.cursor()        
 
-        for x in self.cartids:
-            cursor.execute("SELECT ItemIDs,quantity from cart WHERE cartID=%s",x)
+        query = "SELECT cartID, UserIDs, itemIDs, quantity, value FROM cart WHERE UserIDs = %s"
+        data = (self.userid,)
+        cursor.execute(query, data)
+
+        cartresults = cursor.fetchall()   
+ 
+        cartlist = []
+        for x in cartresults:
+            cartid = x[0]
+            cartlist.append(x[0])
+
+
+        for x in cartlist:
+            cursor.execute("SELECT ItemIDs,quantity from cart WHERE cartID=%s",(x))
             
             cartresults = cursor.fetchall()
             
-            cursor.execute("SELECT stockcount from inventory WHERE ItemID=%s",cartresults[0])
+            cursor.execute("SELECT stockcount from inventory WHERE ItemID=%s",(cartresults[0]))
             inventresults = cursor.fetchall()
 
             cursor.execute("UPDATE inventory SET stockcount=%s WHERE ItemID = %s", (inventresults - cartresults[1]))

@@ -13,6 +13,8 @@ cart = Cart()
 
 def cartmenu(returnloop):
     while(1):
+        cart.setuserid(user.getuserid())
+        print()
         print("0. Exit")
         print("1. Back to Previous Menu")
         print("2. Show Cart")
@@ -21,23 +23,27 @@ def cartmenu(returnloop):
 
         cartloop = input("Select Menu Option: ")
 
-        match inventory:
+        match cartloop:
             case "0":
+                print()
                 print("Thank you for shopping with us")
                 print("Have a Good Day")
                 sys.exit()
+
             case "1":
                 if(returnloop == 1):
                     store()
                 elif(returnloop == 2):
                     invstore()
+
             case "2":
                 print("These are the items in your cart: ")
                 cart.display()
+
             case "3":
                 print("What item would you like to remove from the cart?")
                 cartnum = input("Enter the number of the item you want to remove form the cart: ")
-                if(cart.remove(cartnum) == True):
+                if(cart.removeitem(cartnum) == True):
                     print("The item has been removed")
                 else:
                     print("The item was not in the cart please try again.")
@@ -45,18 +51,16 @@ def cartmenu(returnloop):
             case "4":
                 cart.display()
 
-                cart.setuserid(user.userid)
-
                 print("Your Grand Total is: ", cart.getcarttotal())
                 option = input(("Are you sure you want to check out?(y/n)"))
                 
                 if(option == "y"):
                     cart.checkout()
-                else:
-                    continue
-            
+                       
 def invstore():
     while(1):
+        print()
+        cart.setuserid(user.getuserid())
         print("Welcome "+ user.firstname+" to our store.")
         
         print("0. Exit")
@@ -70,6 +74,7 @@ def invstore():
 
         match(invstoreloop):
             case "0":
+                print()
                 print("Thank you for shopping with us")
                 print("Have a Good Day")
                 sys.exit()
@@ -101,6 +106,7 @@ def invstore():
 def manageaccount():
     while (1):
         #os.system("cls")
+        print()
 
         print("Hello "+ user.firstname+" how would you like to change your account info today?")
 
@@ -134,14 +140,14 @@ def manageaccount():
         elif(manageacc == "3"):#username
             print("The current Username is ",user.getusername())
             newusername = input("What would you like to change it to: ")
-            user.setlastname(newusername)
+            user.setusername(newusername)
             user.updateaccountinfo()
             print("The Username has been changed")
 
         elif(manageacc == "4"):#password
             oldpassword = input("Enter current password: ")
             newpassword = input("Enter new password: ")
-            if(oldpassword == user.getpassword):
+            if(oldpassword == user.getpassword()):
                 user.setpassword(newpassword)
                 user.updateaccountinfo()
                 print("Password has been changed")
@@ -193,6 +199,7 @@ def manageaccount():
 def store():
     while(1):
         #os.system("cls")
+        print()
         print("Hello "+ user.firstname+" how may we help you today.")
 
         print("0. Exit")
@@ -202,6 +209,7 @@ def store():
         mainstoreloop = input("Select Menu Option: ")
     
         if(mainstoreloop == "0"):
+            print()
             print("Thank you for shopping with us")
             print("Have a Good Day")
             sys.exit()
@@ -215,14 +223,15 @@ def store():
 def main():
     while(1):
         #os.system("cls")
+        print()
         print("0. Exit")
         print("1. Login")
         print("2. Create Account")
-        print("3.   ")
 
         option = input("Select Menu option: ")
     
         if (option == "0"):
+            print()
             print("Thank you for shopping with us")
             print("Have a Good Day")
             sys.exit()
@@ -240,8 +249,6 @@ def main():
                 if (status == True):
                     print("Logging in")
                     store()
-                else:
-                    continue
             else:
                 print("Returning to menu.")
 
