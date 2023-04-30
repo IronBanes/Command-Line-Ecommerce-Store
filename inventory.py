@@ -50,7 +50,7 @@ class Inventory:
         self.price = price
 
 
-    def items(self):
+    def list_items(self):
 
         connection = mysql.connector.connect(
                 host="localhost",
@@ -65,8 +65,7 @@ class Inventory:
 
         result = cursor.fetchall()
 
-        for x in result:
-            print("Entire Row:",x,"\n")
+        return result
 
 
 
