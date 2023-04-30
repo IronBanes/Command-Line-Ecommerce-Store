@@ -44,8 +44,16 @@ def cartmenu(returnloop):
 
             case "4":
                 cart.display()
-                option = input(("Are you sure you want to check out?"))
-                cart.checkout()
+
+                cart.setuserid(user.userid)
+
+                print("Your Grand Total is: ", cart.getcarttotal())
+                option = input(("Are you sure you want to check out?(y/n)"))
+                
+                if(option == "y"):
+                    cart.checkout()
+                else:
+                    continue
             
 
 def invstore():
@@ -73,7 +81,7 @@ def invstore():
             
             case "2":
                 print("Our Inventory: ")
-                inventory.display()
+                inventory.display_items()
             
             case "3":
                 print("What Game would you like to add to your cart?")

@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import MySQLConnection, Error
 import sys
+from datetime import date
 
 
 
@@ -305,5 +306,29 @@ class User:
                 return True
             else:
                 return False
+
+    def setlastorder(self,orderdate):
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="password",
+                database="projectschema"
+            )
+
+            print("Successful connection.")
+
+        except:
+            print("Failed connection.")
+
+            ## exits the program if unsuccessful
+        
+        print()
+        cursor = connection.cursor()
+        today = date.today()
+        cursor.execute("UPDATE users SET lastorderdate=%s WHERE UserIDs =%s",(today,self.userid))
+        connection.commit()
+        cursor.close()
+        connection.close()
 
     

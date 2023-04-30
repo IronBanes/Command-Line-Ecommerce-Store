@@ -3,7 +3,7 @@ import sys
 from mysql.connector import MySQLConnection, Error
 
 #carts need to add items, remove items, display the items to the user, and get the item total from the user id
-class cart:
+class Cart:
     def _init_ (self):
         self.userid = 0
         self.quantity = 0
@@ -37,7 +37,7 @@ class cart:
         cursor.execute("SELECT ItemID, price FROM inventory WHERE ItemID=? ", itemID)
 
         result = cursor.fetchall()
-        
+
         price = result[2]
 
         totalvalue = price * amount
@@ -95,8 +95,12 @@ class cart:
             ## commits to database
             ## **needed** for changes to be made to a table
             connection.commit()
+            cursor.close()
+            connection.close()
             return True
         except:
+            cursor.close()
+            connection.close()
             return False
 
     def display(self, userID):
@@ -134,7 +138,7 @@ class cart:
         cursor.close()
         connection.close()
 
-    def getcarttotal(self, userID):
+    def getcarttotal(self):
         try:
             connection = mysql.connector.connect(
                 host="localhost",
@@ -156,20 +160,62 @@ class cart:
         
         totalprice = 0
         for x in self.cartids:
-            cursor.execute("SELECT price from cart WHERE cartID=%s",x[2])
+            cursor.execute("SELECT price from cart WHERE cartID=%s",x)
             
             results = cursor.fetchall()
             
             totalprice += results
+        
+        cursor.close()
+        connection.close()
 
         return totalprice
     
     def checkout(self):
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="password",
+                database="projectschema"
+            )
+
+            print("Successful connection.")
+
+        except:
+            print("Failed connection.")
+
+            ## exits the program if unsuccessful
+        
+        print()
+
+        cursor = connection.cursor()        
+
+        for x in self.cartids:
+            cursor.execute("SELECT ItemIDs,quantity from cart WHERE cartID=%s",x)
+            
+            cartresults = cursor.fetchall()
+            
+            cursor.execute("SELECT stockcount from inventory WHERE ItemID=%s",cartresults[0])
+            inventresults = cursor.fetchall()
+
+            cursor.execute("UPDATE inventory SET stockcount=%s WHERE ItemID = %s", (inventresults - cartresults[1]))
+            cursor.execute("DELETE FROM cart WHERE cartID=%s",x)
+            
+            connection.commit()
+        
+        cursor.close()
+        connection.close()
 
 
-
+        
 
     
+
+
+
+
+
 
 
 

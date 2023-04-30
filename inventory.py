@@ -2,7 +2,7 @@ import mysql.connector
 import sys
 import os    
 class Inventory:
-    def __init__(self, host, user, password, database):
+    def __init__(self):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
@@ -10,7 +10,7 @@ class Inventory:
             database="projectschema"
             )
         
-        self.cursor = self.connection.cursor()
+        self.cursor = connection.cursor()
     
     def list_items(self):
 
