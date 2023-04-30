@@ -28,8 +28,8 @@ class Inventory:
 
     def display_items(self):
         items = self.list_items()
-        headers = ['Title', 'Publisher', 'Stock']
-        print('{:<30}{:<30}{:<10}'.format(*headers))
+        headers = ['Title', 'Publisher', 'Stock', 'Price']
+        print('{:<30}{:<30}{:<10}${:<10}'.format(*headers))
     
         for row in items[1:]:
             print('{:<30}{:<30}{:<10}'.format(row[2], row[4], row[1]))
