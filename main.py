@@ -57,6 +57,7 @@ def cartmenu(returnloop):
                     state = input("State: ")
                     zipcode = input("Zipcode: ")
                     user.setshippinginfo(address, city, state, zipcode)
+                    
                 else:
                     print()
                     shippingchange = input("You have an address on record would you like to use that shipping address? (y/n)")
@@ -91,6 +92,7 @@ def cartmenu(returnloop):
                 
                 if(option == "y"):
                     cart.checkout()
+                    user.setlastorder()
                     print("Your games will be shipped to "+user.getaddress()+".")
                     print("Thank you for shopping with us!")
                     store()
@@ -182,6 +184,7 @@ def invstore():
                 
                 if(option == "y"):
                     cart.checkout()
+                    user.setlastorder()
                     print("Your games will be shipped to "+user.getaddress()+".")
                     print("Thank you for shopping with us!")
                     store()

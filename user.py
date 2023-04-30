@@ -103,7 +103,7 @@ class User:
 
         cursor = connection.cursor()
 
-        cursor.execute("SELECT UserIds, firstname, lastname, username, password, email FROM users")
+        cursor.execute("SELECT UserIDs, firstname, lastname, username, password, email FROM users")
 
         result = cursor.fetchall()
 
@@ -118,10 +118,9 @@ class User:
                 cursor.close()
                 connection.close()
                 return True
-            else:
-                cursor.close()
-                connection.close()
-                return False
+        cursor.close()
+        connection.close()
+        return False
         
 
     def createaccount(self):
@@ -197,7 +196,7 @@ class User:
             query ="UPDATE shipping SET address=%s, city=%s, state=%s, zipcode=%s WHERE UserIDs = %s" 
             data = ( address, city, state, zipcode, self.userid,)
         else:
-            query =  "INSERT INTO shipping (ShippingIDs, UserIDs, address, city, state, zipcode) VALUES(%s, %s, %s, %s, %s)"
+            query =  "INSERT INTO shipping (ShippingIDs, UserIDs, address, city, state, zipcode) VALUES(%s, %s, %s, %s, %s, %s)"
             data = (numofshipids + 1, self.userid, address, city, state, zipcode)
 
         try:
@@ -237,11 +236,8 @@ class User:
             if (x[1] == self.userid):
                 userexist = True
 
-        query = "INSERT INTO payment (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
-        data = (numofpayment, self.userid, card, cvv)
-
         if(userexist):
-            query ="UPDATE payement SET  card=%s, cvv=%s WHERE UserIDs = %s" 
+            query ="UPDATE payment SET card=%s, cvv=%s WHERE UserIDs=%s" 
             data = (card, cvv, self.userid)
         else:
             query =  "INSERT INTO payment (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
@@ -283,11 +279,11 @@ class User:
                 cursor.close()
                 connection.close()
                 return True
-            else:
-                cursor.close()
-                connection.close()
-                return False
         
+        cursor.close()
+        connection.close()
+        return False
+    
     def getshippinginfo(self):
         try:
             connection = mysql.connector.connect(
@@ -316,12 +312,12 @@ class User:
                 cursor.close()
                 connection.close()
                 return True
-            else:
-                cursor.close()
-                connection.close()
-                return False
+            
+        cursor.close()
+        connection.close()
+        return False
 
-    def setlastorder(self,orderdate):
+    def setlastorder(self):
         try:
             connection = mysql.connector.connect(
                 host="localhost",
