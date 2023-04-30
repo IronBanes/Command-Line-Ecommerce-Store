@@ -2,70 +2,28 @@ import mysql.connector
 import sys
 import os    
 class Inventory:
-    def __init__(self):
-        self.itemID = ""
-        self.stock = ""
-        self.title = ""
-        self.genre = ""
-        self.publisher = ""
-        self.price = ""
-
-        
-    def setitemID(self, itemID):
-        self.itemID = itemID
-    
-    def setstock(self, stock):
-        self.stock = stock
-
-    def settitle(self, title):
-        self.title = title
-    
-    def setgenre(self, genre):
-        self.genre = genre
-
-    def setpublisher(self, publisher):
-        self.publisher = publisher
-
-    def setprice(self, price):
-        self.price = price
- 
-   
-   
-    def getitemID(self, itemID):
-        self.itemID = itemID
-    
-    def getstock(self, stock):
-        self.stock = stock
-
-    def gettitle(self, title):
-        self.title = title
-    
-    def getgenre(self, genre):
-        self.genre = genre
-
-    def getpublisher(self, publisher):
-        self.publisher = publisher
-
-    def getprice(self, price):
-        self.price = price
-
-
-    def list_items(self):
-
+    def __init__(self, host, user, password, database):
         connection = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                password="password",
-                database="projectschema"
+            host="localhost",
+            user="root",
+            password="password",
+            database="projectschema"
             )
         
-        cursor = connection.cursor()
+        self.cursor = self.connection.cursor()
+    
+    def list_items(self):
 
-        cursor.execute("SELECT * FROM inventory")
+        self.cursor.execute("SELECT * FROM inventory")
 
-        result = cursor.fetchall()
+        result = self.cursor.fetchall()
 
         return result
+    
+inventory = Inventory('localhost','username', 'password', 'inventory')
+items = inventory.list_items()
+for row in items:
+    print(items)
 
 
 
