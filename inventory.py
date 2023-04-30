@@ -14,12 +14,11 @@ class Inventory:
     
     def list_items(self):
 
-        self.cursor.execute("SELECT * FROM inventory")
+        self.cursor.execute("SELECT itemID, stock, title, publisher, price FROM inventory")
 
         result = self.cursor.fetchall()
-        headers = ['ID', 'Stock', 'Title', 'Genre', 'Publisher', 'Price']
-        table = []
-        table.append(headers)
+        headers = ['ID', 'Stock', 'Title', 'Publisher', 'Price']
+        table = [headers]
         for row in result:
             table.append(row)
         return table
