@@ -1,13 +1,66 @@
 from user import User
-#from cart import Cart
+from cart import Cart
 #from user import User
-#1from inventory import Inventory
+from inventory import Inventory
 
 import mysql.connector
 import sys
 import os
 
 user = User()
+inventory = Inventory()
+cart = Cart()
+
+def cartloop(returnloop):
+    while(1):
+        print("0. Exit")
+        print("1. Back to Previous Menu")
+        print("2. Show Cart")
+        print("3. Remove Item from Cart")
+        print("4. Look at Cart")
+        print("5. Check Out")
+        invstoreloop = input("Select Menu Option: ")
+
+def invstore():
+    while(1):
+        print("Hello "+ user.firstname+" how may we help you today.")
+        print("0. Exit")
+        print("1. Back to Main Menu")
+        print("2. List Items")
+        print("3. Add Item to Cart")
+        print("4. Look at Cart")
+        print("5. Check Out")
+        invstoreloop = input("Select Menu Option: ")
+
+        match(invstoreloop):
+            case "0":
+                print("Thank you for shopping with us")
+                print("Have a Good Day")
+                sys.exit()
+            
+            case "1":
+                print("Returning to Main Menu.")
+                store()
+            
+            case "2":
+                print("Our Inventory: ")
+                inventory.display()
+            
+            case "3":
+                print("What Game would you like to add to your cart?")
+                gameNumber = input("Enter the number of the game: ")
+                cart.additem(gameNumber)
+            
+            case "4":
+                cartloop(2)
+            
+            case "5":
+
+                cart.checkout()
+        
+
+
+
 
 def manageaccount():
     while (1):
@@ -23,9 +76,7 @@ def manageaccount():
         manageacc = input("Select Menu Option: ")
 
         if(manageacc == "0"):
-            print("Thank you for shopping with us")
-            print("Have a Good Day")
-            sys.exit()
+            store()
 
         elif(manageacc == "1"):#first name
             print("The current first name is ",user.getfirstname())
@@ -94,10 +145,6 @@ def manageaccount():
             cvv = input("CVV: ")
             user.setpaymentinfo(card, cvv)
             print("Payment information has been changed.")
-            
-
-
-
 
 def store():
     while(1):
@@ -115,7 +162,7 @@ def store():
         elif(mainstoreloop == "1"):
             print("store")
         elif(mainstoreloop == "2"):
-            print("Cart")
+            cartloop(1)
         elif(mainstoreloop == "3"):
             manageaccount()
 
