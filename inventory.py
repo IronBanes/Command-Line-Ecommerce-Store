@@ -27,7 +27,7 @@ class Inventory:
 
 
     def display_items(self):
-        items = self.list_items()
+        items =  self.list_items()
         headers = ['Title', 'Publisher', 'Stock', 'Price']
         print('{:<30}{:<30}{:<10}${:<10}'.format(*headers))
     

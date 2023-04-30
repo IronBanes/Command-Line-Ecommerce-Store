@@ -79,7 +79,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -113,7 +113,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -132,7 +132,7 @@ class User:
             numofusers += 1
             if (x[1] == self.username):
                 return False
-                
+        print(numofusers)
 
 
         query = "INSERT INTO users (UserIDs, firstname, lastname, username, password, email) VALUES(%s, %s, %s, %s, %s, %s)"
@@ -160,7 +160,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -175,19 +175,24 @@ class User:
         result = cursor.fetchall()
 
         numofshipids = 0
+        userexist = False
         for x in result:
             numofshipids += 1
             if (x[1] == self.userid):
-                return False
+                userexist = True
+                
 
-        query = "INSERT INTO shipping (ShippingIDs, UserIDs, address, city, state, zipcode) VALUES(%s, %s, %s, %s, %s)"
-        data = (numofshipids, self.userid, address, city, state, zipcode)
+        if(userexist):
+            query ="UPDATE shipping SET address=%s, city=%s, state=%s, zipcode=%s WHERE UserIDs = %s" 
+            data = ( address, city, state, zipcode, self.userid,)
+        else:
+            query =  "INSERT INTO shipping (ShippingIDs, UserIDs, address, city, state, zipcode) VALUES(%s, %s, %s, %s, %s)"
+            data = (numofshipids, self.userid, address, city, state, zipcode)
 
         try:
             cursor.execute(query, data)
             connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            print()
+            return True
         
         except Error as error:
             print(error)
@@ -204,7 +209,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -219,19 +224,25 @@ class User:
         result = cursor.fetchall()
 
         numofpayment = 0
+        userexist = False
         for x in result:
             numofpayment += 1
             if (x[1] == self.userid):
-                return False
+                userexist = True
 
-        query = "INSERT INTO shipping (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
-        data = ( numofpayment, self.userid, card, cvv)
+        query = "INSERT INTO payment (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
+        data = (numofpayment, self.userid, card, cvv)
+
+        if(userexist):
+            query ="UPDATE payement SET  card=%s, cvv=%s WHERE UserIDs = %s" 
+            data = (card, cvv, self.userid)
+        else:
+            query =  "INSERT INTO payment (paymentID, UserIDs, card, cvv) VALUES(%s, %s, %s, %s)"
+            data = (numofpayment, self.userid, card, cvv)
 
         try:
             cursor.execute(query, data)
             connection.commit()
-            print(cursor.rowcount, "record inserted.")
-            print()
         
         except Error as error:
             print(error)
@@ -248,7 +259,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -281,7 +292,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -316,7 +327,7 @@ class User:
                 database="projectschema"
             )
 
-            print("Successful connection.")
+            
 
         except:
             print("Failed connection.")
@@ -331,4 +342,34 @@ class User:
         cursor.close()
         connection.close()
 
+    def updateaccountinfo(self):
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="password",
+                database="projectschema"
+            )
+        except:
+            print("Failed connection.")
+
+            ## exits the program if unsuccessful
+        
+        
+        cursor = connection.cursor()
+
+        
+        query ="UPDATE users SET  firstname=%s, lastname=%s, username=%s, password=%s, email=%s WHERE UserIDs = %s)" 
+        data =(self.firstname,self.lastname,self.username,self.password,self.email, self.userid)
+
+        try:
+            cursor.execute(query, data)
+            connection.commit()
+        
+        except Error as error:
+            print(error)
+        finally:
+            cursor.close()
+            connection.close()
+        
     

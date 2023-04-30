@@ -54,7 +54,7 @@ class Cart:
         
         #insert item into cart
         query = "INSERT INTO cart (cartID, UserIDs, itemIDs, quanity, value) VALUES(%s, %s, %s, %s, %s)"
-        data = cartid,self.userid, itemID, amount, totalvalue
+        data = cartid + 1,self.userid, itemID, amount, totalvalue
 
         try:
             cursor.execute(query, data)

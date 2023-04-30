@@ -55,7 +55,6 @@ def cartmenu(returnloop):
                 else:
                     continue
             
-
 def invstore():
     while(1):
         print("Welcome "+ user.firstname+" to our store.")
@@ -122,18 +121,21 @@ def manageaccount():
             print("The current first name is ",user.getfirstname())
             newfirstname = input("What would you like to change it to: ")
             user.setfirstname(newfirstname)
+            user.updateaccountinfo()
             print("The First Name has been changed")
 
         elif(manageacc == "2"):#last name
             print("The current last name is ",user.getlastname())
             newlastname = input("What would you like to change it to: ")
             user.setlastname(newlastname)
+            user.updateaccountinfo()
             print("The Last Name has been changed")
 
         elif(manageacc == "3"):#username
             print("The current Username is ",user.getusername())
             newusername = input("What would you like to change it to: ")
             user.setlastname(newusername)
+            user.updateaccountinfo()
             print("The Username has been changed")
 
         elif(manageacc == "4"):#password
@@ -141,6 +143,7 @@ def manageaccount():
             newpassword = input("Enter new password: ")
             if(oldpassword == user.getpassword):
                 user.setpassword(newpassword)
+                user.updateaccountinfo()
                 print("Password has been changed")
             else:
                 print("The password you enter does not match the current user password.")
@@ -149,6 +152,7 @@ def manageaccount():
             print("The current Email is ",user.getemail())
             newemail = input("What would you like to change it to: ")
             user.setemail(newemail)
+            user.updateaccountinfo()
             print("The Email has been changed")
 
         elif(manageacc == "6"):#shipping info
