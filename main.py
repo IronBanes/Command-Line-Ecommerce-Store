@@ -42,20 +42,59 @@ def cartmenu(returnloop):
 
             case "3":
                 print("What item would you like to remove from the cart?")
-                cartnum = input("Enter the number of the item you want to remove form the cart: ")
+                cartnum = input("Enter the number of the item you want to remove from the cart: ")
                 if(cart.removeitem(cartnum) == True):
                     print("The item has been removed")
                 else:
                     print("The item was not in the cart please try again.")
 
             case "4":
-                cart.display()
+                if(user.getshippinginfo() == False):
+                    print()
+                    print('You do not have a shipping address in our database could you please enter one for check out.')
+                    address = input("Address: ")
+                    city = input("City: ")
+                    state = input("State: ")
+                    zipcode = input("Zipcode: ")
+                    user.setshippinginfo(address, city, state, zipcode)
+                else:
+                    print()
+                    shippingchange = input("You have an address on record would you like to use that shipping address? (y/n)")
+                    if(shippingchange=="n"):
+                        address = input("Address: ")
+                        city = input("City: ")
+                        state = input("State: ")
+                        zipcode = input("Zipcode: ")
+                        user.setshippinginfo(address, city, state, zipcode)
+                    
+                if(user.getpaymentinfo() == False):
+                    print()
+                    print('You do not have a Card with us could you please enter one for check out.')
+                    card = input("Card: ")
+                    cvv = input("CVV: ")
+                    user.setpaymentinfo(card, cvv)
+                else:
+                    print()
+                    cardchange = input("You have a card on record would you like to use that card? (y/n)")
+                    if(cardchange=="n"):
+                        card = input("Card: ")
+                        cvv = input("CVV: ")
+                        user.setpaymentinfo(card, cvv)
+                    
 
-                print("Your Grand Total is: ", cart.getcarttotal())
+                print("Your Cart:")
+                print()
+                cart.display()
+                total = cart.getcarttotal()
+                print("Your Grand Total is: $", total)
                 option = input(("Are you sure you want to check out?(y/n)"))
                 
                 if(option == "y"):
                     cart.checkout()
+                    print("Your games will be shipped to "+user.getaddress()+".")
+                    print("Thank you for shopping with us!")
+                    store()
+
                        
 def invstore():
     while(1):
@@ -101,7 +140,51 @@ def invstore():
                 cartmenu(2)
             
             case "5":
-                cart.checkout()
+                if(user.getshippinginfo() == False):
+                    print()
+                    print('You do not have a shipping address in our database could you please enter one for check out.')
+                    address = input("Address: ")
+                    city = input("City: ")
+                    state = input("State: ")
+                    zipcode = input("Zipcode: ")
+                    user.setshippinginfo(address, city, state, zipcode)
+                else:
+                    print()
+                    shippingchange = input("You have an address on record would you like to use that shipping address? (y/n)")
+                    if(shippingchange=="n"):
+                        address = input("Address: ")
+                        city = input("City: ")
+                        state = input("State: ")
+                        zipcode = input("Zipcode: ")
+                        user.setshippinginfo(address, city, state, zipcode)
+                    
+                if(user.getpaymentinfo() == False):
+                    print()
+                    print('You do not have a Card with us could you please enter one for check out.')
+                    card = input("Card: ")
+                    cvv = input("CVV: ")
+                    user.setpaymentinfo(card, cvv)
+                else:
+                    print()
+                    cardchange = input("You have a card on record would you like to use that card? (y/n)")
+                    if(cardchange=="n"):
+                        card = input("Card: ")
+                        cvv = input("CVV: ")
+                        user.setpaymentinfo(card, cvv)
+                    
+
+                print("Your Cart:")
+                print()
+                cart.display()
+                total = cart.getcarttotal()
+                print("Your Grand Total is: $", total)
+                option = input(("Are you sure you want to check out?(y/n)"))
+                
+                if(option == "y"):
+                    cart.checkout()
+                    print("Your games will be shipped to "+user.getaddress()+".")
+                    print("Thank you for shopping with us!")
+                    store()
 
 def manageaccount():
     while (1):
@@ -162,7 +245,7 @@ def manageaccount():
             print("The Email has been changed")
 
         elif(manageacc == "6"):#shipping info
-            if(user.getpaymentinfo):
+            if(user.getshippinginfo()):
                 print("Your current Shipping information.")
                 print("Address: ",user.getaddress())
                 print("City: ",user.getcity())
@@ -182,7 +265,7 @@ def manageaccount():
 
 
         elif(manageacc == "7"):#payment info
-            if(user.getpaymentinfo):
+            if(user.getpaymentinfo()):
                 print("Your current card information.")
                 print("Card:",user.getcard())
                 print("CVV:", user.getcvv())
@@ -249,6 +332,8 @@ def main():
                 if (status == True):
                     print("Logging in")
                     store()
+                else:
+                    print("Username or password was incorrect please try again.")
             else:
                 print("Returning to menu.")
 

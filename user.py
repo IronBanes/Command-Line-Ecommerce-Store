@@ -115,12 +115,14 @@ class User:
                 self.username = x[3]
                 self.password = x[4]
                 self.email = x[5]
-
+                cursor.close()
+                connection.close()
                 return True
             else:
+                cursor.close()
+                connection.close()
                 return False
-        cursor.close()
-        connection.close()
+        
 
     def createaccount(self):
         try:
@@ -276,12 +278,14 @@ class User:
 
         for x in result:
             if (x[1] == self.userid):
-                self.card = x[3]
-                self.cvv = x[4]
+                self.card = x[2]
+                self.cvv = x[3]
                 cursor.close()
                 connection.close()
                 return True
             else:
+                cursor.close()
+                connection.close()
                 return False
         
     def getshippinginfo(self):
@@ -305,14 +309,16 @@ class User:
 
         for x in result:
             if (x[1] == self.userid):
-                self.address = x[3]
-                self.city = x[4]
-                self.state = x[5]
-                self.zipcode = x[6]
+                self.address = x[2]
+                self.city = x[3]
+                self.state = x[4]
+                self.zipcode = x[5]
                 cursor.close()
                 connection.close()
                 return True
             else:
+                cursor.close()
+                connection.close()
                 return False
 
     def setlastorder(self,orderdate):

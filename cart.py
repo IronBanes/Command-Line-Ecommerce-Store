@@ -90,12 +90,12 @@ class Cart:
         query = "DELETE FROM cart WHERE cartID = %s"
         data = (cartlist[int(pos)],)
 
-        cursor.execute(query,data)
+        
+        try:
+            cursor.execute(query,data)
             ## commits to database
             ## **needed** for changes to be made to a table
-        connection.commit()
-        try:
-            
+            connection.commit()
 
             cursor.close()
             connection.close()
@@ -200,15 +200,17 @@ class Cart:
 
 
         for x in cartlist:
-            cursor.execute("SELECT ItemIDs,quantity from cart WHERE cartID=%s",(x))
+            cursor.execute("SELECT ItemIDs,quantity FROM cart WHERE cartID=%s",(x,))
             
             cartresults = cursor.fetchall()
             
-            cursor.execute("SELECT stockcount from inventory WHERE ItemID=%s",(cartresults[0]))
+            cursor.execute("SELECT stockcount FROM inventory WHERE ItemID=%s",(cartresults[0][0],))
             inventresults = cursor.fetchall()
-
-            cursor.execute("UPDATE inventory SET stockcount=%s WHERE ItemID = %s", (inventresults - cartresults[1]))
-            cursor.execute("DELETE FROM cart WHERE cartID=%s",x)
+            
+            newstockcount = inventresults[0][0] - cartresults[0][1]
+            cursor.execute("UPDATE inventory SET stockcount=%s WHERE ItemID = %s", (newstockcount, cartresults[0][0]))
+            
+            cursor.execute("DELETE FROM cart WHERE cartID=%s",(x,))
             
             connection.commit()
         
