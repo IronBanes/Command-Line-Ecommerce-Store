@@ -43,6 +43,8 @@ def cartmenu(returnloop):
                     print("The item was not in the cart please try again.")
 
             case "4":
+                cart.display()
+                option = input(("Are you sure you want to check out?"))
                 cart.checkout()
             
 
@@ -76,7 +78,12 @@ def invstore():
             case "3":
                 print("What Game would you like to add to your cart?")
                 gameNumber = input("Enter the number of the game: ")
-                cart.additem(gameNumber)
+                
+                amount = input("How many copies of " + inventory.gettitle(gameNumber) + "?")
+                if(amount < inventory.getstockcount(gameNumber)):
+                    cart.additem(gameNumber,amount)
+                else:
+                    print("The amount you entered is more than we have in stock sorry.")
             
             case "4":
                 cartmenu(2)
