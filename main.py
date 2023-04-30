@@ -11,25 +11,52 @@ user = User()
 inventory = Inventory()
 cart = Cart()
 
-def cartloop(returnloop):
+def cartmenu(returnloop):
     while(1):
         print("0. Exit")
         print("1. Back to Previous Menu")
         print("2. Show Cart")
         print("3. Remove Item from Cart")
-        print("4. Look at Cart")
-        print("5. Check Out")
-        invstoreloop = input("Select Menu Option: ")
+        print("4. Check Out")
+
+        cartloop = input("Select Menu Option: ")
+
+        match inventory:
+            case "0":
+                print("Thank you for shopping with us")
+                print("Have a Good Day")
+                sys.exit()
+            case "1":
+                if(returnloop == 1):
+                    store()
+                elif(returnloop == 2):
+                    invstore()
+            case "2":
+                print("These are the items in your cart: ")
+                cart.display()
+            case "3":
+                print("What item would you like to remove from the cart?")
+                cartnum = input("Enter the number of the item you want to remove form the cart: ")
+                if(cart.remove(cartnum) == True):
+                    print("The item has been removed")
+                else:
+                    print("The item was not in the cart please try again.")
+
+            case "4":
+                cart.checkout()
+            
 
 def invstore():
     while(1):
-        print("Hello "+ user.firstname+" how may we help you today.")
+        print("Welcome "+ user.firstname+" to our store.")
+        
         print("0. Exit")
         print("1. Back to Main Menu")
         print("2. List Items")
         print("3. Add Item to Cart")
         print("4. Look at Cart")
         print("5. Check Out")
+        
         invstoreloop = input("Select Menu Option: ")
 
         match(invstoreloop):
@@ -52,19 +79,17 @@ def invstore():
                 cart.additem(gameNumber)
             
             case "4":
-                cartloop(2)
+                cartmenu(2)
             
             case "5":
-
                 cart.checkout()
-        
-
-
-
 
 def manageaccount():
     while (1):
         #os.system("cls")
+
+        print("Hello "+ user.firstname+" how would you like to change your account info today?")
+
         print("0. Back to Main Menu")
         print("1. Change First Name")
         print("2. Change Last Name")
@@ -149,6 +174,8 @@ def manageaccount():
 def store():
     while(1):
         #os.system("cls")
+        print("Hello "+ user.firstname+" how may we help you today.")
+
         print("0. Exit")
         print("1. Store")
         print("2. Cart")
@@ -160,9 +187,9 @@ def store():
             print("Have a Good Day")
             sys.exit()
         elif(mainstoreloop == "1"):
-            print("store")
+            invstore()
         elif(mainstoreloop == "2"):
-            cartloop(1)
+            cartmenu(1)
         elif(mainstoreloop == "3"):
             manageaccount()
 
