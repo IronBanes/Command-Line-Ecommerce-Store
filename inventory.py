@@ -17,8 +17,23 @@ class Inventory:
         self.cursor.execute("SELECT * FROM inventory")
 
         result = self.cursor.fetchall()
+        headers = ['ID', 'Stock', 'Title', 'Genre', 'Publisher', 'Price']
+        table = []
+        table.append(headers)
+        for row in result:
+            table.append(row)
+        return table
+    
 
-        return result
+
+    def display_items(self):
+        items = self.list_items()
+        headers = ['Title', 'Publisher', 'Stock']
+        print('{:<30}{:<30}{:<10}'.format(*headers))
+    
+        for row in items[1:]:
+            print('{:<30}{:<30}{:<10}'.format(row[2], row[4], row[1]))
+    
     
     def get_title(self, itemID):
         sql = "SELECT FROM title FROM inventory WHERE itemID = %s"
@@ -34,10 +49,7 @@ class Inventory:
         stock = self.cur.fetchone()[0]
         return stock
     
-inventory = Inventory('localhost','username', 'password', 'inventory')
-items = inventory.list_items()
-for row in items:
-    print(items)
+
 
 
 
