@@ -20,6 +20,20 @@ class Inventory:
 
         return result
     
+    def get_title(self, itemID):
+        sql = "SELECT FROM title FROM inventory WHERE itemID = %s"
+        value = (itemID,)
+        self.cursor.execute(sql, value)
+        title = self.cur.fetchone()[0]
+        return title
+    
+    def get_stock(self, itemID):
+        sql = "SELECT stock FROM inventory WHERE itemID = %s"
+        value = (itemID,)
+        self.cursor.execute(sql, value)
+        stock = self.cur.fetchone()[0]
+        return stock
+    
 inventory = Inventory('localhost','username', 'password', 'inventory')
 items = inventory.list_items()
 for row in items:
