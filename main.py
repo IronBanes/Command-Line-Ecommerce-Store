@@ -268,21 +268,5 @@ def main():
             user.createaccount()
             store()
 
-        elif (option == "3"):
-            username = "iron"
-            user.setusername(username)
-            password = "pass"
-            user.setpassword(password)
-            email = "email"
-            user.setemail(email)
-            firstname = "gavin"
-            user.setfirstname(firstname)
-            lastname = "eley"
-            user.setlastname(lastname)
-
-            user.createaccount()
-            store()
-
-
 if __name__ == "__main__":
     main()
