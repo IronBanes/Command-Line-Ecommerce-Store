@@ -1,17 +1,17 @@
-import mysql.connector
-import sys
-import os    
+import mysql.connector  
 class Inventory:
+    #Connect to Database
     def __init__(self):
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="password",
+            password="",
             database="projectschema"
             )
         
         self.cursor = connection.cursor()
     
+    #Grab Items from Database Table inventory
     def list_items(self):
 
         self.cursor.execute("SELECT itemID, stock, title, publisher, price FROM inventory")
@@ -24,7 +24,7 @@ class Inventory:
         return table
     
 
-
+    #Display them in the program
     def display_items(self):
         items =  self.list_items()
         headers = ['Title', 'Publisher', 'Stock', 'Price']
@@ -33,14 +33,14 @@ class Inventory:
         for row in items[1:]:
             print('{:<30}{:<30}{:<10}'.format(row[2], row[4], row[1]))
     
-    
+    # Grabs title for cart
     def get_title(self, itemID):
         sql = "SELECT title FROM inventory WHERE itemID = %s"
         value = (itemID,)
         self.cursor.execute(sql, value)
         title = self.cursor.fetchone()[0]
         return title
-    
+    #Grab Stock Count for Cart 
     def get_stock(self, itemID):
         sql = "SELECT stock FROM inventory WHERE itemID = %s"
         value = (itemID,)
