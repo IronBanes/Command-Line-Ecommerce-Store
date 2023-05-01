@@ -5,7 +5,7 @@ class Inventory:
         connection = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",
+            password="password",
             database="projectschema"
             )
         
