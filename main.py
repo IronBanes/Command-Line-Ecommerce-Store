@@ -306,55 +306,7 @@ def store():
         elif(mainstoreloop == "3"):
             manageaccount()
 
-def main():
-    while(1):
-        #os.system("cls")
-        print()
-        print("0. Exit")
-        print("1. Login")
-        print("2. Create Account")
 
-        option = input("Select Menu option: ")
-    
-        if (option == "0"):
-            print()
-            print("Thank you for shopping with us")
-            print("Have a Good Day")
-            sys.exit()
-    
-        elif (option == "1"):
-            username = input("Username: ")
-            user.setusername(username)
-            password = input("Password: ")
-            user.setpassword(password)
-  
-            confirmation = input("Are you sure you want to login? (Y/N) ")
-    
-            if (confirmation.upper() == "Y"):
-                status = user.loginaccount()
-                if (status == True):
-                    print("Logging in")
-                    store()
-                else:
-                    print("Username or password was incorrect please try again.")
-            else:
-                print("Returning to menu.")
-
-        elif (option == "2"):
-
-            username = input("Username: ")
-            user.setusername(username)
-            password = input("Password: ")
-            user.setpassword(password)
-            email = input("Email:")
-            user.setemail(email)
-            firstname = input("First Name: ")
-            user.setfirstname(firstname)
-            lastname = input("Last Name: ")
-            user.setlastname(lastname)
-
-            user.createaccount()
-            store()
 
 if __name__ == "__main__":
     main()
