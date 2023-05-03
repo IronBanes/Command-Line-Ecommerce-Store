@@ -282,29 +282,7 @@ def manageaccount():
             user.setpaymentinfo(card, cvv)
             print("Payment information has been changed.")
 
-def store():
-    while(1):
-        #os.system("cls")
-        print()
-        print("Hello "+ user.firstname+" how may we help you today.")
 
-        print("0. Exit")
-        print("1. Store")
-        print("2. Cart")
-        print("3. Manage Account")
-        mainstoreloop = input("Select Menu Option: ")
-    
-        if(mainstoreloop == "0"):
-            print()
-            print("Thank you for shopping with us")
-            print("Have a Good Day")
-            sys.exit()
-        elif(mainstoreloop == "1"):
-            invstore()
-        elif(mainstoreloop == "2"):
-            cartmenu(1)
-        elif(mainstoreloop == "3"):
-            manageaccount()
 
 def main():
     while(1):
